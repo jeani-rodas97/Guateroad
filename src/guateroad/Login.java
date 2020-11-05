@@ -36,9 +36,9 @@ public class Login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         bttLogin = new javax.swing.JButton();
         bttRegistrar = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
+        OpConductor = new javax.swing.JToggleButton();
+        OpAdmin = new javax.swing.JToggleButton();
+        OpUser = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,28 +83,33 @@ public class Login extends javax.swing.JFrame {
 
         bttRegistrar.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
         bttRegistrar.setText("Registrar");
+        bttRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttRegistrarActionPerformed(evt);
+            }
+        });
         getContentPane().add(bttRegistrar);
         bttRegistrar.setBounds(140, 330, 100, 40);
 
-        jToggleButton1.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
-        jToggleButton1.setText("Conductor");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        OpConductor.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        OpConductor.setText("Conductor");
+        OpConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                OpConductorActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1);
-        jToggleButton1.setBounds(190, 280, 110, 25);
+        getContentPane().add(OpConductor);
+        OpConductor.setBounds(190, 280, 110, 25);
 
-        jToggleButton2.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
-        jToggleButton2.setText("Administrador");
-        getContentPane().add(jToggleButton2);
-        jToggleButton2.setBounds(290, 280, 130, 25);
+        OpAdmin.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        OpAdmin.setText("Administrador");
+        getContentPane().add(OpAdmin);
+        OpAdmin.setBounds(290, 280, 130, 25);
 
-        jToggleButton3.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
-        jToggleButton3.setText("Usuario");
-        getContentPane().add(jToggleButton3);
-        jToggleButton3.setBounds(103, 280, 90, 25);
+        OpUser.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        OpUser.setText("Usuario");
+        getContentPane().add(OpUser);
+        OpUser.setBounds(103, 280, 90, 25);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/guateroad/Fondo.png"))); // NOI18N
         getContentPane().add(jLabel2);
@@ -119,15 +124,49 @@ public class Login extends javax.swing.JFrame {
 
     private void bttLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttLoginActionPerformed
         String Usuario, password; 
-        if ((txtUsuario.getText().equals("andree_avalos")) && (txtPass.getText().equals("admin"))) //Evaluando si es el administrador 
+        Usuario = txtUsuario.getText();
+        Guateroad.contraseña = txtPass.getText();
+        password = Guateroad.fn.EncriptarSHA256(txtPass.getText());;
+        if ((txtUsuario.getText().equals("andree_avalos")) && (txtPass.getText().equals("admin")) && (OpAdmin.isSelected())) //Evaluando si es el administrador 
         {
+            Admin administrador = new Admin();
+            administrador.setVisible(true);
+            dispose();
+        }
+        
+        if(OpUser.isSelected())
+        {
+            Guateroad.id = Guateroad.ArbolUsuario.ObtenerId(Usuario, password);
+            if (Guateroad.ArbolUsuario.Buscar(Guateroad.id))
+            {
+                Usuario user = new Usuario();
+                user.setVisible(true);
+                dispose();
+                //Abrir la interfaz del usuario normal 
+            }
             
+        }
+        
+        if(OpConductor.isSelected())
+        {
+            Guateroad.id = Guateroad.ArbolConductor.ObtenerId(Usuario, password);
+            if (Guateroad.ArbolConductor.Buscar(Guateroad.id))
+            {
+                Conductor cdtor = new Conductor();
+                cdtor.setVisible(true);
+                dispose();
+            }
         }
     }//GEN-LAST:event_bttLoginActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void OpConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpConductorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_OpConductorActionPerformed
+
+    private void bttRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttRegistrarActionPerformed
+        Registrar Nuevo = new Registrar();
+        Nuevo.setVisible(true);
+    }//GEN-LAST:event_bttRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,15 +204,15 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton OpAdmin;
+    private javax.swing.JToggleButton OpConductor;
+    private javax.swing.JToggleButton OpUser;
     private javax.swing.JButton bttLogin;
     private javax.swing.JButton bttRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
